@@ -25,6 +25,9 @@ void rotate_canvas(lv_obj_t *canvas, lv_color_t cbuf[]) {
 }
 
 void draw_battery(lv_obj_t *canvas, const struct status_state *state) {
+    lv_draw_label_dsc_t label_dsc;
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_16, LV_TEXT_ALIGN_RIGHT);
+
     lv_draw_rect_dsc_t rect_black_dsc;
     init_rect_dsc(&rect_black_dsc, LVGL_BACKGROUND);
     lv_draw_rect_dsc_t rect_white_dsc;
@@ -41,6 +44,10 @@ void draw_battery(lv_obj_t *canvas, const struct status_state *state) {
         lv_draw_img_dsc_init(&img_dsc);
         lv_canvas_draw_img(canvas, 9, -1, &bolt, &img_dsc);
     }
+
+    char charge_text[6] = {};
+    snprintf(charge_text, sizeof(charge_text), "%d%%", state->battery);
+    lv_canvas_draw_text(canvas, 20, 0, 60, &label_dsc, charge_text);
 }
 
 void init_label_dsc(lv_draw_label_dsc_t *label_dsc, lv_color_t color, const lv_font_t *font,
