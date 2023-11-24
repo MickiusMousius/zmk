@@ -10,6 +10,8 @@
 
 #define CANVAS_SIZE 144
 
+#define WPM_SAMPLES 20
+
 #define LVGL_BACKGROUND                                                                            \
     IS_ENABLED(CONFIG_NICE_VIEW_WIDGET_INVERTED) ? lv_color_black() : lv_color_white()
 #define LVGL_FOREGROUND                                                                            \
@@ -25,7 +27,7 @@ struct status_state {
     bool active_profile_bonded;
     uint8_t layer_index;
     const char *layer_label;
-    uint8_t wpm[10];
+    uint8_t wpm[WPM_SAMPLES];
 #else
     bool connected;
 #endif

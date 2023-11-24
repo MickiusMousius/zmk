@@ -91,13 +91,13 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     lv_canvas_draw_rect(canvas, 1, 22, 142, 40, &rect_black_dsc);
 
     char wpm_text[6] = {};
-    snprintf(wpm_text, sizeof(wpm_text), "%d", state->wpm[9]);
+    snprintf(wpm_text, sizeof(wpm_text), "%d", state->wpm[WPM_SAMPLES - 1]);
     lv_canvas_draw_text(canvas, 118, 52, 24, &label_dsc_wpm, wpm_text);
 
     int max = 0;
     int min = 256;
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < WPM_SAMPLES; i++) {
         if (state->wpm[i] > max) {
             max = state->wpm[i];
         }
@@ -111,12 +111,13 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
         range = 1;
     }
 
-    lv_point_t points[10];
-    for (int i = 0; i < 10; i++) {
-        points[i].x = 2 + i * 14;
+    lv_point_t points[WPM_SAMPLES];
+    for (int i = 0; i < WPM_SAMPLES; i++) {
+        points[i].x =
+            2 + i * 7; // TODO: Calculate the integer value based on WPM samples and canvas size
         points[i].y = 60 - (state->wpm[i] - min) * 36 / range;
     }
-    lv_canvas_draw_line(canvas, points, 10, &line_dsc);
+    lv_canvas_draw_line(canvas, points, WPM_SAMPLES, &line_dsc);
 
     // Rotate canvas
     // rotate_canvas(canvas, cbuf);
@@ -285,10 +286,10 @@ ZMK_DISPLAY_WIDGET_LISTENER(widget_layer_status, struct layer_status_state, laye
 ZMK_SUBSCRIPTION(widget_layer_status, zmk_layer_state_changed);
 
 static void set_wpm_status(struct zmk_widget_status *widget, struct wpm_status_state state) {
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < WPM_SAMPLES - 1; i++) {
         widget->state.wpm[i] = widget->state.wpm[i + 1];
     }
-    widget->state.wpm[9] = state.wpm;
+    widget->state.wpm[WPM_SAMPLES - 1] = state.wpm;
 
     draw_top(widget->obj, widget->cbuf, &widget->state);
 }
