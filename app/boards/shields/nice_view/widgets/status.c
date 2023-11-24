@@ -119,9 +119,6 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
         points[i].y = 19 + WPM_HEIGHT - (state->wpm[i] - min) * (WPM_HEIGHT - 7) / range;
     }
     lv_canvas_draw_line(canvas, points, WPM_SAMPLES, &line_dsc);
-
-    // Rotate canvas
-    // rotate_canvas(canvas, cbuf);
 }
 
 static void draw_middle(lv_obj_t *widget, lv_color_t cbuf[], const struct status_state *state) {
@@ -164,9 +161,6 @@ static void draw_middle(lv_obj_t *widget, lv_color_t cbuf[], const struct status
         lv_canvas_draw_text(canvas, circle_offsets[i][0] - 8, circle_offsets[i][1] - 10, 16,
                             (selected ? &label_dsc_black : &label_dsc), label);
     }
-
-    // Rotate canvas
-    // rotate_canvas(canvas, cbuf);
 }
 
 static void draw_bottom(lv_obj_t *widget, lv_color_t cbuf[], const struct status_state *state) {
@@ -190,9 +184,6 @@ static void draw_bottom(lv_obj_t *widget, lv_color_t cbuf[], const struct status
     } else {
         lv_canvas_draw_text(canvas, 0, 5, CANVAS_SIZE, &label_dsc, state->layer_label);
     }
-
-    // Rotate canvas
-    // rotate_canvas(canvas, cbuf);
 }
 
 static void set_battery_status(struct zmk_widget_status *widget,
