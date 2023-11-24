@@ -144,7 +144,7 @@ static void draw_middle(lv_obj_t *widget, lv_color_t cbuf[], const struct status
 
     // Draw circles
     int circle_offsets[5][2] = {
-        {13, 13}, {55, 13}, {34, 34}, {13, 55}, {55, 55},
+        {14, 13}, {43, 13}, {72, 13}, {101, 13}, {130, 13},
     };
 
     for (int i = 0; i < 5; i++) {
@@ -314,7 +314,7 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     lv_obj_align(top, LV_ALIGN_TOP_LEFT, 0, 0);
     lv_canvas_set_buffer(top, widget->cbuf, CANVAS_SIZE, CANVAS_SIZE, LV_IMG_CF_TRUE_COLOR);
     lv_obj_t *middle = lv_canvas_create(widget->obj);
-    lv_obj_align(middle, LV_ALIGN_TOP_LEFT, 0, 70);
+    lv_obj_align(middle, LV_ALIGN_TOP_LEFT, 0, 110);
     lv_canvas_set_buffer(middle, widget->cbuf2, CANVAS_SIZE, CANVAS_SIZE, LV_IMG_CF_TRUE_COLOR);
     lv_obj_t *bottom = lv_canvas_create(widget->obj);
     lv_obj_align(bottom, LV_ALIGN_TOP_MID, 0, 140);
