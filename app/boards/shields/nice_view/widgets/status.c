@@ -50,7 +50,7 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     lv_draw_label_dsc_t label_dsc;
     init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_16, LV_TEXT_ALIGN_RIGHT);
     lv_draw_label_dsc_t label_dsc_wpm;
-    init_label_dsc(&label_dsc_wpm, LVGL_FOREGROUND, &lv_font_unscii_8, LV_TEXT_ALIGN_RIGHT);
+    init_label_dsc(&label_dsc_wpm, LVGL_FOREGROUND, &lv_font_montserrat_12, LV_TEXT_ALIGN_RIGHT);
     lv_draw_rect_dsc_t rect_black_dsc;
     init_rect_dsc(&rect_black_dsc, LVGL_BACKGROUND);
     lv_draw_rect_dsc_t rect_white_dsc;
@@ -93,7 +93,7 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
 
     char wpm_text[6] = {};
     snprintf(wpm_text, sizeof(wpm_text), "%d", state->wpm[WPM_SAMPLES - 1]);
-    lv_canvas_draw_text(canvas, CANVAS_SIZE - 26, 10 + WPM_HEIGHT, 24, &label_dsc_wpm, wpm_text);
+    lv_canvas_draw_text(canvas, CANVAS_SIZE - 26, 6 + WPM_HEIGHT, 24, &label_dsc_wpm, wpm_text);
 
     int max = 0;
     int min = 256;
@@ -112,10 +112,10 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
         range = 1;
     }
 
+    const int WPM_COLUMN_WIDTH = CANVAS_SIZE / WPM_SAMPLES;
     lv_point_t points[WPM_SAMPLES];
     for (int i = 0; i < WPM_SAMPLES; i++) {
-        points[i].x =
-            2 + i * 7; // TODO: Calculate the integer value based on WPM samples and canvas size
+        points[i].x = 2 + i * WPM_COLUMN_WIDTH;
         points[i].y = 18 + WPM_HEIGHT - (state->wpm[i] - min) * (WPM_HEIGHT - 6) / range;
     }
     lv_canvas_draw_line(canvas, points, WPM_SAMPLES, &line_dsc);
@@ -175,7 +175,7 @@ static void draw_bottom(lv_obj_t *widget, lv_color_t cbuf[], const struct status
     lv_draw_rect_dsc_t rect_black_dsc;
     init_rect_dsc(&rect_black_dsc, LVGL_BACKGROUND);
     lv_draw_label_dsc_t label_dsc;
-    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_14, LV_TEXT_ALIGN_CENTER);
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_18, LV_TEXT_ALIGN_CENTER);
 
     // Fill background
     lv_canvas_draw_rect(canvas, 0, 0, CANVAS_SIZE, CANVAS_SIZE, &rect_black_dsc);
@@ -318,7 +318,7 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     lv_obj_align(middle, LV_ALIGN_TOP_LEFT, 0, 110);
     lv_canvas_set_buffer(middle, widget->cbuf2, CANVAS_SIZE, CANVAS_SIZE, LV_IMG_CF_TRUE_COLOR);
     lv_obj_t *bottom = lv_canvas_create(widget->obj);
-    lv_obj_align(bottom, LV_ALIGN_TOP_MID, 0, 140);
+    lv_obj_align(bottom, LV_ALIGN_TOP_MID, 0, 136);
     lv_canvas_set_buffer(bottom, widget->cbuf3, CANVAS_SIZE, CANVAS_SIZE, LV_IMG_CF_TRUE_COLOR);
 
     sys_slist_append(&widgets, &widget->node);
