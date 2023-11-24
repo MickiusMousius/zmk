@@ -87,12 +87,13 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     lv_canvas_draw_text(canvas, 0, 0, CANVAS_SIZE, &label_dsc, output_text);
 
     // Draw WPM
-    lv_canvas_draw_rect(canvas, 0, 21, 144, 42, &rect_white_dsc);
-    lv_canvas_draw_rect(canvas, 1, 22, 142, 40, &rect_black_dsc);
+    const int WPM_HEIGHT = 82;
+    lv_canvas_draw_rect(canvas, 0, 21, CANVAS_SIZE, WPM_HEIGHT, &rect_white_dsc);
+    lv_canvas_draw_rect(canvas, 1, 22, CANVAS_SIZE - 2, WPM_HEIGHT - 2, &rect_black_dsc);
 
     char wpm_text[6] = {};
     snprintf(wpm_text, sizeof(wpm_text), "%d", state->wpm[WPM_SAMPLES - 1]);
-    lv_canvas_draw_text(canvas, 118, 52, 24, &label_dsc_wpm, wpm_text);
+    lv_canvas_draw_text(canvas, CANVAS_SIZE - 26, 10 + WPM_HEIGHT, 24, &label_dsc_wpm, wpm_text);
 
     int max = 0;
     int min = 256;
@@ -115,7 +116,7 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     for (int i = 0; i < WPM_SAMPLES; i++) {
         points[i].x =
             2 + i * 7; // TODO: Calculate the integer value based on WPM samples and canvas size
-        points[i].y = 60 - (state->wpm[i] - min) * 36 / range;
+        points[i].y = 18 + WPM_HEIGHT - (state->wpm[i] - min) * (WPM_HEIGHT - 6) / range;
     }
     lv_canvas_draw_line(canvas, points, WPM_SAMPLES, &line_dsc);
 
