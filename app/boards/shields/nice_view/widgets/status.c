@@ -89,11 +89,11 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     // Draw WPM
     const int WPM_HEIGHT = 82;
     lv_canvas_draw_rect(canvas, 0, 21, CANVAS_SIZE, WPM_HEIGHT, &rect_white_dsc);
-    lv_canvas_draw_rect(canvas, 1, 22, CANVAS_SIZE - 2, WPM_HEIGHT - 2, &rect_black_dsc);
+    lv_canvas_draw_rect(canvas, 2, 23, CANVAS_SIZE - 4, WPM_HEIGHT - 4, &rect_black_dsc);
 
     char wpm_text[6] = {};
     snprintf(wpm_text, sizeof(wpm_text), "%d", state->wpm[WPM_SAMPLES - 1]);
-    lv_canvas_draw_text(canvas, CANVAS_SIZE - 26, 6 + WPM_HEIGHT, 24, &label_dsc_wpm, wpm_text);
+    lv_canvas_draw_text(canvas, CANVAS_SIZE - 29, 3 + WPM_HEIGHT, 24, &label_dsc_wpm, wpm_text);
 
     int max = 0;
     int min = 256;
@@ -112,11 +112,11 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
         range = 1;
     }
 
-    const int WPM_COLUMN_WIDTH = CANVAS_SIZE / WPM_SAMPLES;
+    const int WPM_COLUMN_WIDTH = (CANVAS_SIZE - 4) / WPM_SAMPLES;
     lv_point_t points[WPM_SAMPLES];
     for (int i = 0; i < WPM_SAMPLES; i++) {
-        points[i].x = 2 + i * WPM_COLUMN_WIDTH;
-        points[i].y = 18 + WPM_HEIGHT - (state->wpm[i] - min) * (WPM_HEIGHT - 6) / range;
+        points[i].x = 3 + i * WPM_COLUMN_WIDTH;
+        points[i].y = 19 + WPM_HEIGHT - (state->wpm[i] - min) * (WPM_HEIGHT - 7) / range;
     }
     lv_canvas_draw_line(canvas, points, WPM_SAMPLES, &line_dsc);
 
