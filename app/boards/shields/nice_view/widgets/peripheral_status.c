@@ -22,8 +22,12 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/usb.h>
 #include <zmk/ble.h>
 
-LV_IMG_DECLARE(balloon);
-LV_IMG_DECLARE(mountain);
+// LV_IMG_DECLARE(balloon);
+// LV_IMG_DECLARE(image4);
+// LV_IMG_DECLARE(mountain);
+
+extern const lv_img_dsc_t image_list[];
+extern const uint32_t image_count;
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
@@ -48,9 +52,6 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     // Draw output status
     lv_canvas_draw_text(canvas, 0, 0, CANVAS_SIZE, &label_dsc,
                         state->connected ? LV_SYMBOL_WIFI : LV_SYMBOL_CLOSE);
-
-    // Rotate canvas
-    rotate_canvas(canvas, cbuf);
 }
 
 static void set_battery_status(struct zmk_widget_status *widget,
@@ -114,9 +115,10 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     lv_canvas_set_buffer(top, widget->cbuf, CANVAS_SIZE, CANVAS_SIZE, LV_IMG_CF_TRUE_COLOR);
 
     lv_obj_t *art = lv_img_create(widget->obj);
-    bool random = sys_rand32_get() & 1;
-    lv_img_set_src(art, random ? &balloon : &mountain);
-    lv_obj_align(art, LV_ALIGN_TOP_LEFT, 0, 0);
+
+    uint32_t random = sys_rand32_get() / (4294967295 / image_count);
+    lv_img_set_src(art, &image_list[random]);
+    lv_obj_align(art, LV_ALIGN_TOP_LEFT, 0, 21);
 
     sys_slist_append(&widgets, &widget->node);
     widget_battery_status_init();
